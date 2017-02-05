@@ -1,4 +1,12 @@
 #!/usr/bin/python
+"""This module solves the challenge for Spotippos.
+Example requests:
+* http://pythonbox/garbanzo-api/provinces
+* http://pythonbox/garbanzo-api/properties
+* http://pythonbox/garbanzo-api/properties/2
+* http://pythonbox/garbanzo-api/properties?ax=630&ay=680&bx=685&by=675
+
+"""
 import urllib
 import json
 import logging
@@ -23,9 +31,20 @@ app = Flask(__name__)
 # Global methods
 @app.errorhandler(404)
 def not_found(error):
+    """Method to handle 404
+
+    Just a helper to make a default response for 404 status code. 
+
+    """
     return make_response(jsonify({'error': 'Not found'}, 404))
 
 def findProperty(property_id):
+    """Method to find a property inside the JSON of properties.
+
+    Receives an integer to find the related property among the JSON properties.
+          :param property_id: Integer representing the ID of the property.
+
+    """
     if 'properties' in properties_json:
         for p in properties_json['properties']:
             if p.get('id') == property_id:
@@ -33,6 +52,12 @@ def findProperty(property_id):
     return ret
 
 def searchProperties(p_ax, p_ay, p_bx, p_by):
+    """Method to find properties inside an area.
+
+    Receives four integers that represents the upper-left and bottom-right of the are that need to be explored. Returns all properties inside that area.
+          :param property_id: Integer representing the ID of the property.
+
+    """
     ret = []
 
     if 'properties' in properties_json:
@@ -45,6 +70,11 @@ def searchProperties(p_ax, p_ay, p_bx, p_by):
     return ret
 
 def setNewPropertyID():
+    """Generates a new ID for a created property.
+
+    Iterate over the whole JSON to garantee that a new ID will be generated for the new Property.
+
+    """
     ret = 0
 
     if 'properties' in properties_json:
@@ -56,6 +86,11 @@ def setNewPropertyID():
     return ret
 
 def setProvince(p_x, p_y):
+    """Defines the provice for a property.
+
+    Based on its X/Y positions, defines the set of provinces the property belongs to.
+
+    """
     province_list = ['Gode', 'Groola', 'Jaby', 'Nova', 'Ruja', 'Scavy']
     pvlist_len    = len(province_list)
     ret = []
@@ -69,6 +104,11 @@ def setProvince(p_x, p_y):
     return ret
 
 def validateHouse(p_data):
+    """Run the range business validation rules.
+
+    Validates if a property has the right values for its attributes.
+
+    """
     ret = False
 
     if (p_data['beds'] in range(1, 5)) and (p_data['baths'] in range(1, 4)) and (p_data['squareMeters'] in range(20, 240)) and (p_data['long'] in range(0, 1400)) and (p_data['lat'] in range(0, 1000)):
@@ -79,10 +119,12 @@ def validateHouse(p_data):
 # REST operations
 @app.route('/garbanzo-api/provinces', methods=['GET'])
 def get_provinces():
+    """Return all the provinces."""
     return jsonify(provinces_json)
 
 @app.route('/garbanzo-api/properties', methods=['GET', 'POST'])
 def property():
+    """Return and create properties."""
     if request.method == 'GET':
         app.logger.info('Entrou no GET')
 
@@ -127,7 +169,7 @@ def property():
 
 @app.route('/garbanzo-api/properties/<int:property_id>', methods=['GET'])
 def get_property_by_id(property_id):
-
+    """Return a specific property."""
     property = findProperty(property_id)
 
     if len(property) == 0:

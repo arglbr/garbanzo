@@ -66,9 +66,23 @@ public class Application {
     	return properties.size();
     }
 
-    public static void setNewProperty(Property p_prop) {
-    	p_prop.setId(0);        // TODO: Definir logica para novos IDs
+    public static int setNewProperty(Property p_prop) {
+    	int ret    = -1;
+    	int cur_id = 1;
+    	
+    	if (properties != null && properties.size() > 0) {
+    		for (Property prop : properties) {
+    			if (prop.getId() > cur_id) {
+    				cur_id = prop.getId();
+    			}
+    		}
+    		
+    		ret = cur_id + 1;
+    	}
+
+    	p_prop.setId(ret);
     	p_prop.setProvince();   // TODO: Construir logica para definir a provincia
     	properties.add(p_prop);
+    	return ret;
     }
 }

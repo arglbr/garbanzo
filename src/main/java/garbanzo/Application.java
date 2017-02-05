@@ -40,11 +40,35 @@ public class Application {
     	return properties;
     }
 
+    public static Property getSpecificProperty(String p_id) {
+    	Property ret = null;
+    	int qid;
+    	
+    	try {
+        	qid = Integer.parseInt(p_id);
+
+        	if (properties != null && properties.size() > 0) {
+        		for (Property prop : properties) {
+        			if (prop.getId() == qid) {
+        				ret = prop;
+        				break;
+        			}
+        		}
+        	}
+		} catch (NumberFormatException e) {
+			System.out.println("Impossivel converter o ID do imovel em um código conhecido. Detalhes: " + e.getMessage());
+		}
+
+    	return ret;
+    }
+
     public static int getNumberOfProperties() {
     	return properties.size();
     }
 
     public static void setNewProperty(Property p_prop) {
+    	p_prop.setId(0);        // TODO: Definir logica para novos IDs
+    	p_prop.setProvince();   // TODO: Construir logica para definir a provincia
     	properties.add(p_prop);
     }
 }

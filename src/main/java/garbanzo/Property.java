@@ -21,6 +21,8 @@ public class Property implements Serializable
 	private Integer baths;
 	private Integer squareMeters;
 
+	private String province;
+
 	public Integer getId() {
 		return id;
 	}
@@ -91,6 +93,14 @@ public class Property implements Serializable
 
 	public void setSquareMeters(Integer squareMeters) {
 		this.squareMeters = squareMeters;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince() {
+		//
 	}
 }
 

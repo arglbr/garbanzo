@@ -12,17 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PropertyController {
     private final AtomicLong counter = new AtomicLong();
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "/properties", method = RequestMethod.GET)
     public Property property(@RequestParam(value="id", defaultValue="*") String p_id) {
-	logger.info("GET recebido");
+	LOG.info("GET recebido");
         return new Property();
     }
 
     @RequestMapping(value = "/properties", method = RequestMethod.POST)
-    public Property property(@RequestBody Property p_property) {
-	logger.info("POST recebido");
-        return new Property();
+    public void property(@RequestBody Property p_property) {
+    	LOG.info("POST recebido");
+    	LOG.info("Number of properties: " + Application.getNumberOfProperties());
+    	Application.setNewProperty(p_property);
+    	LOG.info("Number of properties: " + Application.getNumberOfProperties());
     }
 }

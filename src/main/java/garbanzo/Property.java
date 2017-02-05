@@ -4,19 +4,22 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Property implements Serializable
 {
 	private Integer id;
 	private String title;
-	private Integer price;
+	private long price;
 	private String description;
 	private Integer lat;
+	
+	@JsonProperty("long")
 	private Integer _long;
+
 	private Integer beds;
 	private Integer baths;
 	private Integer squareMeters;
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-	private final static long serialVersionUID = -7155747415586111506L;
 
 	public Integer getId() {
 		return id;
@@ -34,11 +37,11 @@ public class Property implements Serializable
 		this.title = title;
 	}
 
-	public Integer getPrice() {
+	public long getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 
@@ -88,14 +91,6 @@ public class Property implements Serializable
 
 	public void setSquareMeters(Integer squareMeters) {
 		this.squareMeters = squareMeters;
-	}
-
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
-
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
 	}
 }
 

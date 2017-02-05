@@ -1,6 +1,4 @@
-{
-  "totalProperties": 8000,
-  "properties": [
+[
     {
       "id": 1,
       "title": "Imóvel código 1, com 3 quartos e 2 banheiros.",
@@ -88001,5 +87999,5 @@
       "baths": 4,
       "squareMeters": 128
     }
-  ]
-}
+]
+

@@ -162,8 +162,8 @@ def property():
                 compl = ""
                 lista = searchProperties(int(qs_ax), int(qs_ay),
                                          int(qs_bx), int(qs_by))
-                ret = [ { 'foundProperties' : len(lista),
-                          'properties' : lista } ]
+                ret = [{'foundProperties' : len(lista),
+                        'properties' : lista}]
                 return jsonify(ret)
             else:
                 abort(500)

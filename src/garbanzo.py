@@ -18,10 +18,11 @@ from flask import make_response
 from flask import request
 
 # Global variables
-provinces_url   = "https://raw.githubusercontent.com/VivaReal/code-challenge/master/provinces.json"
+base_url        = "https://raw.githubusercontent.com/VivaReal/code-challenge"
+provinces_url   = base_url + "/master/provinces.json"
 provinces_resp  = urllib.urlopen(provinces_url)
 provinces_json  = json.loads(provinces_resp.read())
-properties_url  = "https://raw.githubusercontent.com/VivaReal/code-challenge/master/properties.json"
+properties_url  = base_url + "/master/properties.json"
 properties_resp = urllib.urlopen(properties_url)
 properties_json = json.loads(properties_resp.read())
 
@@ -41,8 +42,10 @@ def not_found(error):
 def findProperty(property_id):
     """Method to find a property inside the JSON of properties.
 
-    Receives an integer to find the related property among the JSON properties.
-          :param property_id: Integer representing the ID of the property.
+    Receives an integer to find the related property among the JSON
+    properties.
+          :param property_id: Integer representing the ID of the
+                              property.
 
     """
     if 'properties' in properties_json:
@@ -54,16 +57,21 @@ def findProperty(property_id):
 def searchProperties(p_ax, p_ay, p_bx, p_by):
     """Method to find properties inside an area.
 
-    Receives four integers that represents the upper-left and bottom-right of the are that need to be explored. Returns all properties inside that area.
-          :param property_id: Integer representing the ID of the property.
+    Receives four integers that represents the upper-left and
+    bottom-right of the are that need to be explored. Returns all
+    properties inside that area.
+          :param property_id: Integer representing the ID of the
+                              property.
 
     """
     ret = []
 
     if 'properties' in properties_json:
         for p in properties_json['properties']:
-            # app.logger.info('p_ax=' + `p_ax` + '#p_ay=' + `p_ay` + '#p_bx=' + `p_bx` + '#p_by=' + `p_by` + '#p-long=' + `p['long']` + '#p-lat=' + `p['lat']`)
-            if ((p_ax <= p['long']) and (p_ay >= p['lat'])) and ((p_bx >= p['long']) and (p_by <= p['lat'])):
+            if ((p_ax <= p['long'])
+                    and (p_ay >= p['lat']))
+                    and ((p_bx >= p['long'])
+                    and (p_by <= p['lat'])):
                 p['provinces'] = setProvince(p['long'], p['lat'])
                 ret.append(p)
 
@@ -72,7 +80,8 @@ def searchProperties(p_ax, p_ay, p_bx, p_by):
 def setNewPropertyID():
     """Generates a new ID for a created property.
 
-    Iterate over the whole JSON to garantee that a new ID will be generated for the new Property.
+    Iterate over the whole JSON to garantee that a new ID will be
+    generated for the new Property.
 
     """
     ret = 0
@@ -88,7 +97,8 @@ def setNewPropertyID():
 def setProvince(p_x, p_y):
     """Defines the provice for a property.
 
-    Based on its X/Y positions, defines the set of provinces the property belongs to.
+    Based on its X/Y positions, defines the set of provinces the
+    property belongs to.
 
     """
     province_list = ['Gode', 'Groola', 'Jaby', 'Nova', 'Ruja', 'Scavy']
@@ -98,7 +108,10 @@ def setProvince(p_x, p_y):
     for idx in range(0, pvlist_len):
         pv = province_list[idx]
 
-        if (p_x >= provinces_json[pv]['boundaries']['upperLeft']['x']) and (p_y <= provinces_json[pv]['boundaries']['upperLeft']['y']) and (p_x <= provinces_json[pv]['boundaries']['bottomRight']['x']) and (p_y >= provinces_json[pv]['boundaries']['bottomRight']['y']):
+        if (p_x >= provinces_json[pv]['boundaries']['upperLeft']['x'])
+            and (p_y <= provinces_json[pv]['boundaries']['upperLeft']['y'])
+            and (p_x <= provinces_json[pv]['boundaries']['bottomRight']['x'])
+            and (p_y >= provinces_json[pv]['boundaries']['bottomRight']['y']):
             ret.append(pv)
 
     return ret
@@ -111,7 +124,11 @@ def validateHouse(p_data):
     """
     ret = False
 
-    if (p_data['beds'] in range(1, 5)) and (p_data['baths'] in range(1, 4)) and (p_data['squareMeters'] in range(20, 240)) and (p_data['long'] in range(0, 1400)) and (p_data['lat'] in range(0, 1000)):
+    if (p_data['beds'] in range(1, 5))
+            and (p_data['baths'] in range(1, 4))
+            and (p_data['squareMeters'] in range(20, 240))
+            and (p_data['long'] in range(0, 1400))
+            and (p_data['lat'] in range(0, 1000)):
         ret = True
 
     return ret
@@ -143,11 +160,14 @@ def property():
             qs_bx = request.args.get('bx')
             qs_by = request.args.get('by')
 
-            if len(qs_ax) > 0 and len(qs_ay) > 0 and len(qs_bx) > 0 and len(qs_by) > 0:
+            if len(qs_ax) > 0 and len(qs_ay) > 0
+                    and len(qs_bx) > 0 and len(qs_by) > 0:
                 app.logger.info('Entrou no ESTRANHO')
                 compl = ""
-                lista = searchProperties(int(qs_ax), int(qs_ay), int(qs_bx), int(qs_by))
-                ret = [ { 'foundProperties' : len(lista), 'properties' : lista } ]
+                lista = searchProperties(int(qs_ax), int(qs_ay),
+                                         int(qs_bx), int(qs_by))
+                ret = [ { 'foundProperties' : len(lista),
+                          'properties' : lista } ]
                 return jsonify(ret)
             else:
                 abort(500)
@@ -164,8 +184,12 @@ def property():
            abort(500);
 
         properties_json['properties'].append(dataDict)
-        new_data = {'id': dataDict['id'], 'provinces' : dataDict['provinces']}
-        return jsonify(new_data), 201, {'Content-Type': 'application/json', 'Location': '/garbanzo-api/properties/' + `dataDict['id']`}
+        prop_id = dataDict['id']
+        ret = {'id': prop_id, 'provinces' : dataDict['provinces']}
+        return jsonify(ret),
+                       201,
+                       {'Content-Type': 'application/json',
+                        'Location': '/garbanzo-api/properties/' + `prop_id`}
 
 @app.route('/garbanzo-api/properties/<int:property_id>', methods=['GET'])
 def get_property_by_id(property_id):
@@ -180,8 +204,11 @@ def get_property_by_id(property_id):
 
 # Start app
 if __name__ == '__main__':
-    formatter = logging.Formatter("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-    handler   = RotatingFileHandler('/var/log/garbanzo.log', maxBytes=1073741824, backupCount=1)
+    log_format  = "[%(asctime)s] {%(pathname)s"
+    log_format += ":%(lineno)d} %(levelname)s - %(message)s"
+    formatter   = logging.Formatter(log_format)
+    handler     = RotatingFileHandler('/var/log/garbanzo.log',
+                                      maxBytes=1073741824, backupCount=1)
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)

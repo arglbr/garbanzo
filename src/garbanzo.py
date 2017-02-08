@@ -11,11 +11,7 @@ import urllib
 import json
 import logging
 from logging.handlers import RotatingFileHandler
-from flask import Flask
-from flask import jsonify
-from flask import abort
-from flask import make_response
-from flask import request
+from flask import Flask, jsonify, abort, make_response, request
 
 # Global variables
 base_url        = "https://raw.githubusercontent.com/VivaReal/code-challenge"
@@ -68,9 +64,9 @@ def searchProperties(p_ax, p_ay, p_bx, p_by):
 
     if 'properties' in properties_json:
         for p in properties_json['properties']:
-            if ((p_ax <= p['long'])
-                    and (p_ay >= p['lat']))
-                    and ((p_bx >= p['long'])
+            if ((p_ax <= p['long']) \
+                    and (p_ay >= p['lat'])) \
+                    and ((p_bx >= p['long']) \
                     and (p_by <= p['lat'])):
                 p['provinces'] = setProvince(p['long'], p['lat'])
                 ret.append(p)
@@ -108,9 +104,9 @@ def setProvince(p_x, p_y):
     for idx in range(0, pvlist_len):
         pv = province_list[idx]
 
-        if (p_x >= provinces_json[pv]['boundaries']['upperLeft']['x'])
-            and (p_y <= provinces_json[pv]['boundaries']['upperLeft']['y'])
-            and (p_x <= provinces_json[pv]['boundaries']['bottomRight']['x'])
+        if (p_x >= provinces_json[pv]['boundaries']['upperLeft']['x']) \
+            and (p_y <= provinces_json[pv]['boundaries']['upperLeft']['y']) \
+            and (p_x <= provinces_json[pv]['boundaries']['bottomRight']['x']) \
             and (p_y >= provinces_json[pv]['boundaries']['bottomRight']['y']):
             ret.append(pv)
 
@@ -124,10 +120,10 @@ def validateHouse(p_data):
     """
     ret = False
 
-    if (p_data['beds'] in range(1, 5))
-            and (p_data['baths'] in range(1, 4))
-            and (p_data['squareMeters'] in range(20, 240))
-            and (p_data['long'] in range(0, 1400))
+    if (p_data['beds'] in range(1, 5)) \
+            and (p_data['baths'] in range(1, 4)) \
+            and (p_data['squareMeters'] in range(20, 240)) \
+            and (p_data['long'] in range(0, 1400)) \
             and (p_data['lat'] in range(0, 1000)):
         ret = True
 
@@ -160,7 +156,7 @@ def property():
             qs_bx = request.args.get('bx')
             qs_by = request.args.get('by')
 
-            if len(qs_ax) > 0 and len(qs_ay) > 0
+            if len(qs_ax) > 0 and len(qs_ay) > 0 \
                     and len(qs_bx) > 0 and len(qs_by) > 0:
                 app.logger.info('Entrou no ESTRANHO')
                 compl = ""
@@ -186,9 +182,9 @@ def property():
         properties_json['properties'].append(dataDict)
         prop_id = dataDict['id']
         ret = {'id': prop_id, 'provinces' : dataDict['provinces']}
-        return jsonify(ret),
-                       201,
-                       {'Content-Type': 'application/json',
+        return jsonify(ret), \
+                       201, \
+                       {'Content-Type': 'application/json', \
                         'Location': '/garbanzo-api/properties/' + `prop_id`}
 
 @app.route('/garbanzo-api/properties/<int:property_id>', methods=['GET'])
@@ -201,6 +197,7 @@ def get_property_by_id(property_id):
 
     property['provinces'] = setProvince(property['long'], property['lat'])
     return jsonify(property)
+
 
 # Start app
 if __name__ == '__main__':

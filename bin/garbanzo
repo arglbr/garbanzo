@@ -3,7 +3,7 @@
 case $1 in
     "--install")
         echo "Installing garbanzo (spotippos)..."
-        pip install -r conf/requirements.txt
+        pip install -qr conf/requirements.txt
         ;;
     "--start")
         echo "Starting garbanzo at background..."

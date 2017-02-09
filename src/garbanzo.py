@@ -14,11 +14,11 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, jsonify, abort, make_response, request
 
 # Global variables
-base_url        = "https://raw.githubusercontent.com/VivaReal/code-challenge"
-provinces_url   = base_url + "/master/provinces.json"
+BASE_URL        = "https://raw.githubusercontent.com/VivaReal/code-challenge"
+provinces_url   = BASE_URL + "/master/provinces.json"
 provinces_resp  = urllib.urlopen(provinces_url)
 provinces_json  = json.loads(provinces_resp.read())
-properties_url  = base_url + "/master/properties.json"
+properties_url  = BASE_URL + "/master/properties.json"
 properties_resp = urllib.urlopen(properties_url)
 properties_json = json.loads(properties_resp.read())
 

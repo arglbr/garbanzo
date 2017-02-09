@@ -28,11 +28,16 @@ Your API root will be:
 ```
 http://<host>:9832/garbanzo-api/
 ```
-And start playing with it. Some of example request:
+Here follows some example requests:
 * http://{host}:9832/garbanzo-api/provinces
 * http://{host}:9832/garbanzo-api/properties
 * http://{host}:9832/garbanzo-api/properties/2
 * http://{host}:9832/garbanzo-api/properties?ax=630&ay=680&bx=685&by=675
+
+If you want to run the tests:
+```
+$ bin/garbanzo --run-tests
+```
 
 Why 'Garbanzo'? What name is this??
 ---------------------

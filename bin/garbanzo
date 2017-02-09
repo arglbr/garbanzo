@@ -1,0 +1,25 @@
+#!/bin/bash
+
+case $1 in
+    "start")
+        echo "Starting app..."
+        export FLASK_APP=src/garbanzo.py
+
+        if [ "$2" != "" ]; then
+            if [ $2 == "--debug" ]; then
+                export FLASK_DEBUG=1
+            fi
+        fi
+
+        flask run --host=0.0.0.0 --port=80 &
+        ;;
+    "stop")
+        echo "Stopping app..."
+        unset $FLASK_APP
+        ;;
+    *)
+        echo "Invalid argument. The only valid ones are start or stop".
+        echo ""
+        ;;
+esac
+

@@ -1,5 +1,5 @@
 # Garbanzo
-Playing game with Spotippos
+Playing game with Spotippos.
 
 Requirements
 ---------------------

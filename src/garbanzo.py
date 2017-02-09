@@ -195,7 +195,8 @@ def property():
         return jsonify(ret), \
                        201, \
                        {'Content-Type': 'application/json', \
-                        'Location': '/garbanzo-api/properties/' + `prop_id`}
+                        'Location': API_ROOT + '/properties/' \
+                        + `prop_id`}
 
 @app.route(API_ROOT + '/properties/<int:property_id>', methods=['GET'])
 def get_property_by_id(property_id):

@@ -17,6 +17,9 @@ case $1 in
         echo "Execute bin/garbanzo --stop to stop the application."
         echo "LOG File: logs/garbanzo.log"
 	echo ""
+        echo "API Root: http://{host}:9832/garbanzo-api/"
+	echo ""
+	echo ""
         export FLASK_APP=src/garbanzo.py
 
         if [ "$2" != "" ]; then

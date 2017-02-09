@@ -20,11 +20,11 @@ If no errors occurs:
 ```
 $ bin/garbanzo --start 
 ```
-or, if you want debug it:
+or, if you want to debug it:
 ```
 $ bin/garbanzo --start --debug
 ```
-Point your browser to:
+Your API root will be:
 ```
 http://<host>:9832/garbanzo-api/
 ```

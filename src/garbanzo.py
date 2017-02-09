@@ -203,7 +203,7 @@ def get_property_by_id(property_id):
         abort(404)
 
     property['provinces'] = setProvince(property['long'], property['lat'])
-    app.logger.info('Grabbing property#' + `property['id']i`)
+    app.logger.info('Grabbing property#' + `property['id']`)
     return jsonify(property)
 
 

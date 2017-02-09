@@ -1,7 +1,11 @@
 #!/bin/bash
 
 case $1 in
-    "start")
+    "--install")
+        echo "Installing garbanzo (spotippos)..."
+        pip install -r conf/requirements.txt
+        ;;
+    "--start")
         echo "Starting app..."
         export FLASK_APP=src/garbanzo.py
 
@@ -13,12 +17,26 @@ case $1 in
 
         flask run --host=0.0.0.0 --port=80 &
         ;;
-    "stop")
-        echo "Stopping app..."
+    "--stop")
+        echo "Stopping garbanzo..."
         unset $FLASK_APP
+        SRV="flask"
+        while :
+        do
+        	   if [ -z "$(ps aux | grep $SRV | grep -v 'grep')" ]
+        	   then
+        		   echo "Garbanzo stopped!"
+        		   break;
+        	   else
+        		   echo "Garbanzo running, trying to kill it..."
+        		   ps aux | grep "$SRV" | grep -v 'grep' | awk '{print $2}' | xargs kill -9
+        	   fi
+
+        	   sleep 2
+        done
         ;;
     *)
-        echo "Invalid argument. The only valid ones are start or stop".
+        echo "Invalid argument. The only valid ones are --start, --stop or --install".
         echo ""
         ;;
 esac

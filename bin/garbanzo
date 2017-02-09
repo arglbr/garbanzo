@@ -10,6 +10,8 @@ case $1 in
         echo "The app will be ready to receive requests after a 'Running on http://0.0.0.0:9832/' message at this console..."
         echo "Hit [ENTER] to release the terminal."
         echo "Execute bin/garbanzo --stop to stop the application."
+        echo "LOG File: logs/garbanzo.log"
+	echo ""
         export FLASK_APP=src/garbanzo.py
 
         if [ "$2" != "" ]; then

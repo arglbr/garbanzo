@@ -212,7 +212,7 @@ if __name__ == '__main__':
     log_format  = "[%(asctime)s] {%(pathname)s"
     log_format += ":%(lineno)d} %(levelname)s - %(message)s"
     formatter   = logging.Formatter(log_format)
-    handler     = RotatingFileHandler('/var/log/garbanzo.log',
+    handler     = RotatingFileHandler('logs/garbanzo.log',
                                       maxBytes=1073741824, backupCount=1)
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)

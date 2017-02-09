@@ -10,6 +10,7 @@ Example requests:
 import urllib
 import json
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 from flask import Flask, jsonify, abort, make_response, request
 
@@ -212,7 +213,7 @@ if __name__ == '__main__':
     log_format  = "[%(asctime)s] {%(pathname)s"
     log_format += ":%(lineno)d} %(levelname)s - %(message)s"
     formatter   = logging.Formatter(log_format)
-    handler     = RotatingFileHandler('logs/garbanzo.log',
+    handler     = RotatingFileHandler(os.environ['HOME'] + '/garbanzo.log',
                                       maxBytes=1073741824, backupCount=1)
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)

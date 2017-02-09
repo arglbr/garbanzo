@@ -1,10 +1,10 @@
 #!/usr/bin/python
 """This module solves the challenge for Spotippos.
 Example requests:
-* http://pythonbox/garbanzo-api/provinces
-* http://pythonbox/garbanzo-api/properties
-* http://pythonbox/garbanzo-api/properties/2
-* http://pythonbox/garbanzo-api/properties?ax=630&ay=680&bx=685&by=675
+* http://{host}:{port}/garbanzo-api/provinces
+* http://{host}:{port}/garbanzo-api/properties
+* http://{host}:{port}/garbanzo-api/properties/2
+* http://{host}:{port}/garbanzo-api/properties?ax=630&ay=680&bx=685&by=675
 
 """
 import urllib
@@ -13,7 +13,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from flask import Flask, jsonify, abort, make_response, request
 
-# Global variables
+# Provinces & Properties location.
 BASE_URL        = "https://raw.githubusercontent.com/VivaReal/code-challenge"
 provinces_url   = BASE_URL + "/master/provinces.json"
 provinces_resp  = urllib.urlopen(provinces_url)
@@ -209,5 +209,5 @@ if __name__ == '__main__':
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run()
 

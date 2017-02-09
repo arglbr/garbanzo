@@ -1,4 +1,4 @@
-# garbanzo
+# Garbanzo
 Playing game with Spotippos
 
 Requirements
@@ -10,7 +10,7 @@ Requirements
 
 Setup
 ---------------------
-The setup can be made at a docker, vagrant image, an Ansible playbook, inside a Python virtualenv or even at your machine. For the sake of simplicity, I'll let "where" up to you (and keep an eye on the requirements section) :-). Once you decided, just do the following:
+The setup can be made at a docker, vagrant image, an Ansible playbook, inside a Python virtualenv or even at your machine. For the sake of simplicity, I'll let "where" up to you - and keep an eye on the requirements section :-). Once you decided, just do the following:
 ```
 $ git clone 'https://github.com/arglbr/garbanzo.git'
 $ cd garbanzo
@@ -33,4 +33,8 @@ And start playing with it. Some of example request:
 * http://{host}:9832/garbanzo-api/properties
 * http://{host}:9832/garbanzo-api/properties/2
 * http://{host}:9832/garbanzo-api/properties?ax=630&ay=680&bx=685&by=675
+
+Why 'Garbanzo'? What name is this??
+---------------------
+Blame Github.
 

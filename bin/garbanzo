@@ -2,11 +2,16 @@
 
 case $1 in
     "--install")
-        echo "Installing garbanzo (spotippos)..."
+        echo "Installing Garbanzo (Spotippos)..."
         pip install -qr conf/requirements.txt
         ;;
+    "--run-tests")
+        echo "Running Garbanzo tests..."
+        echo ""
+	pyresttest 'http://localhost:9832' tests/garbanzoTestCase.yaml
+        ;;
     "--start")
-        echo "Starting garbanzo at background..."
+        echo "Starting Garbanzo at background..."
         echo "The app will be ready to receive requests after a 'Running on http://0.0.0.0:9832/' message at this console..."
         echo "Hit [ENTER] to release the terminal."
         echo "Execute bin/garbanzo --stop to stop the application."
@@ -23,7 +28,7 @@ case $1 in
         flask run --host=0.0.0.0 --port=9832 &
         ;;
     "--stop")
-        echo "Stopping garbanzo..."
+        echo "Stopping Garbanzo..."
         unset $FLASK_APP
         SRV="flask"
         while :
@@ -41,7 +46,7 @@ case $1 in
         done
         ;;
     *)
-        echo "Invalid argument. The only valid ones are --start, --stop or --install".
+        echo "Invalid argument. The only valid ones are --install, --run-tests, --start [--debug] or --stop".
         echo ""
         ;;
 esac

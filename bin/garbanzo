@@ -6,7 +6,10 @@ case $1 in
         pip install -r conf/requirements.txt
         ;;
     "--start")
-        echo "Starting app..."
+        echo "Starting garbanzo at background..."
+        echo "The app will be ready to receive requests after a 'Running on http://0.0.0.0:9832/' message at this console..."
+        echo "Hit [ENTER] to release the terminal."
+        echo "Execute bin/garbanzo --stop to stop the application."
         export FLASK_APP=src/garbanzo.py
 
         if [ "$2" != "" ]; then

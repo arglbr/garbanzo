@@ -41,6 +41,7 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}, 404))
 
 def findProperty(property_id):
+    ret = None
     """Method to find a property inside the JSON of properties.
 
     Receives an integer to find the related property among the JSON
@@ -53,6 +54,7 @@ def findProperty(property_id):
         for p in properties_json['properties']:
             if p.get('id') == property_id:
                 ret = p
+
     return ret
 
 def searchProperties(p_ax, p_ay, p_bx, p_by):
@@ -170,7 +172,7 @@ def property():
                         'properties' : lista}]
                 return jsonify(ret)
             else:
-                app.logger.error('Properties query string informed but invalid.')
+                app.logger.error('Properties query string invalid.')
                 abort(500)
         else:
             abort(500)
@@ -182,7 +184,8 @@ def property():
         dataDict['provinces'] = setProvince(dataDict['long'], dataDict['lat'])
 
         if validateHouse(dataDict) == False:
-           app.logger.error('The property data contains invalid information. Review your beds, baths or area parameters.')
+           app.logger.error('The property data contains invalid information.'\
+                            + ' Review your beds, baths or area parameters.')
            abort(500);
 
         properties_json['properties'].append(dataDict)
@@ -199,13 +202,16 @@ def get_property_by_id(property_id):
     """Return a specific property."""
     property = findProperty(property_id)
 
-    if len(property) == 0:
-        app.logger.error('The property data contains invalid information. Review your beds, baths or area parameters.')
-        abort(404)
+    if not property:
+        app.logger.error('Seems that the property id#' + `property_id` \
+                         + ' does not exists.')
+        response = make_response('', 404)
+    else:
+        property['provinces'] = setProvince(property['long'], property['lat'])
+        app.logger.info('Grabbing property#' + `property['id']`)
+        response = jsonify(property)
 
-    property['provinces'] = setProvince(property['long'], property['lat'])
-    app.logger.info('Grabbing property#' + `property['id']`)
-    return jsonify(property)
+    return response;
 
 
 # Start app

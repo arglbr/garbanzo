@@ -13,11 +13,15 @@ import logging
 from logging.handlers import RotatingFileHandler
 from flask import Flask, jsonify, abort, make_response, request
 
-# Provinces & Properties location.
+# Base URL for provinces and properties.
 BASE_URL        = "https://raw.githubusercontent.com/VivaReal/code-challenge"
+
+# Provinces data.
 provinces_url   = BASE_URL + "/master/provinces.json"
 provinces_resp  = urllib.urlopen(provinces_url)
 provinces_json  = json.loads(provinces_resp.read())
+
+# Properties data.
 properties_url  = BASE_URL + "/master/properties.json"
 properties_resp = urllib.urlopen(properties_url)
 properties_json = json.loads(properties_resp.read())
@@ -25,7 +29,7 @@ properties_json = json.loads(properties_resp.read())
 # FlaskApp
 app = Flask(__name__)
 
-# Global methods
+# Garbanzo "business" methods
 @app.errorhandler(404)
 def not_found(error):
     """Method to handle 404
@@ -129,28 +133,28 @@ def validateHouse(p_data):
 
     return ret
 
-# REST operations
-@app.route('/garbanzo-api/provinces', methods=['GET'])
+# REST Services
+API_ROOT = '/garbanzo-api'
+
+@app.route(API_ROOT + '/provinces', methods=['GET'])
 def get_provinces():
     """Return all the provinces."""
     return jsonify(provinces_json)
 
-@app.route('/garbanzo-api/properties', methods=['GET', 'POST'])
+@app.route(API_ROOT + '/properties', methods=['GET', 'POST'])
 def property():
     """Return and create properties."""
     if request.method == 'GET':
-        app.logger.info('Entrou no GET')
-
         if len(properties_json) == 0:
-            app.logger.info('Entrou como se nao houvesse dados pra mostrar')
+            app.logger.info('The properties data is empty. Aborting.')
             abort(404)
 
         if len(request.args) == 0:
-            app.logger.info('Entrou no ZERO')
+            app.logger.info('Properties operation without query string.')
             return jsonify(properties_json)
 
         if len(request.args) == 4:
-            app.logger.info('Entrou no QUATRO')
+            app.logger.info('Properties operation with geo querystring.')
             qs_ax = request.args.get('ax')
             qs_ay = request.args.get('ay')
             qs_bx = request.args.get('bx')
@@ -158,7 +162,6 @@ def property():
 
             if len(qs_ax) > 0 and len(qs_ay) > 0 \
                     and len(qs_bx) > 0 and len(qs_by) > 0:
-                app.logger.info('Entrou no ESTRANHO')
                 compl = ""
                 lista = searchProperties(int(qs_ax), int(qs_ay),
                                          int(qs_bx), int(qs_by))
@@ -166,6 +169,7 @@ def property():
                         'properties' : lista}]
                 return jsonify(ret)
             else:
+                app.logger.error('Properties query string informed but invalid.')
                 abort(500)
         else:
             abort(500)
@@ -177,25 +181,29 @@ def property():
         dataDict['provinces'] = setProvince(dataDict['long'], dataDict['lat'])
 
         if validateHouse(dataDict) == False:
+           app.logger.error('The property data contains invalid information. Review your beds, baths or area parameters.')
            abort(500);
 
         properties_json['properties'].append(dataDict)
         prop_id = dataDict['id']
         ret = {'id': prop_id, 'provinces' : dataDict['provinces']}
+        app.logger.info('Created property#' + `prop_id`)
         return jsonify(ret), \
                        201, \
                        {'Content-Type': 'application/json', \
                         'Location': '/garbanzo-api/properties/' + `prop_id`}
 
-@app.route('/garbanzo-api/properties/<int:property_id>', methods=['GET'])
+@app.route(API_ROOT + '/properties/<int:property_id>', methods=['GET'])
 def get_property_by_id(property_id):
     """Return a specific property."""
     property = findProperty(property_id)
 
     if len(property) == 0:
+        app.logger.error('The property data contains invalid information. Review your beds, baths or area parameters.')
         abort(404)
 
     property['provinces'] = setProvince(property['long'], property['lat'])
+    app.logger.info('Grabbing property#' + `property['id']i`)
     return jsonify(property)
 
 

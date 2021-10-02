@@ -1,5 +1,16 @@
+# DEPRECATED
+
+![no-maintenance-intended](https://img.shields.io/maintenance/no/2017?style=plastic)
+
 # Garbanzo
 Playing game with Spotippos.
+
+> Deprecated, obsolete and archived.
+> 
+> This was part of the interview process at Maplink in 2017.
+> 
+> I keep the code here for historical purposes only.
+> 
 
 Requirements
 ---------------------
